@@ -6,7 +6,7 @@ import { EmployeeName } from "../../domain/value-objects/employee-name";
 import { EmployeeAge } from "../../domain/value-objects/employee-age";
 
 export class EmployeeRepository implements IEmployeeRepository {
-  private tableName = "Employees";
+  private tableName = process.env.EMPLOYEES_TABLE!;
   private dbClient = new DynamoDB.DocumentClient();
 
   async save(employee: Employee): Promise<void> {

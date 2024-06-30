@@ -1,9 +1,12 @@
 service: aws-serverless-api-challenge 
-frameworkVersion: '3'
+frameworkVersion: '4'
+
+custom:
+  tableName: "employees-table-${sls:stage}"
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   region: sa-east-1
   iam:
     role:
@@ -26,27 +29,19 @@ functions:
   createEmployee:
     handler: src/serverless/createEmployee.createEmployee
     events:
-      - http:
-          path: employees
-          method: post
+      - httpApi: "*"
   deleteEmployee:
     handler: src/serverless/deleteEmployee.deleteEmployee
     events:
-      - http:
-          path: employees/{id}
-          method: delete
+      - httpApi: "*"
   getEmployee:
     handler: src/serverless/getEmployee.getEmployee
     events:
-      - http:
-          path: employees/{id}
-          method: get
+      - httpApi: "*"
   updateEmployee:
     handler: src/serverless/updateEmployee.updateEmployee
     events:
-      - http:
-          path: employees/{id}
-          method: put
+      - httpApi: "*"
 
 
 resources:
@@ -55,23 +50,13 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: employeeId
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: employeeId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.tableName}
 
 package:
   individually: true
-
-plugins:
-  - serverless-plugin-typescript
-  - serverless-esbuild
-
-custom:
-  tableName: "users-table-${sls:stage}"
-  esbuild:
-    bundle: true
-    minify: false
