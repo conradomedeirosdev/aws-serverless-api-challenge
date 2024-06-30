@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { CreateEmployee } from "../../application/use-cases/create-employee";
-import { EmployeeRepository } from "../database/employee-repository";
+import { CreateEmployee } from "../application/use-cases/create-employee";
+import { EmployeeRepository } from "../infrastructure/database/employee-repository";
 
 const employeeRepository = new EmployeeRepository();
 

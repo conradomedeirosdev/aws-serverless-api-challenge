@@ -1,12 +1,12 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { GetEmployee } from "../../application/use-cases/get-employee";
-import { EmployeeRepository } from "../database/employee-repository";
+import { DeleteEmployee } from "../application/use-cases/delete-employee";
+import { EmployeeRepository } from "../infrastructure/database/employee-repository";
 
 const employeeRepository = new EmployeeRepository();
 
-export const getEmployee: APIGatewayProxyHandler = async (event) => {
+export const deleteEmployee: APIGatewayProxyHandler = async (event) => {
     try {
-        const { id } = event.pathParameters || {};
+        const id = event.pathParameters?.id;
 
         if (!id) {
             return {
@@ -15,12 +15,12 @@ export const getEmployee: APIGatewayProxyHandler = async (event) => {
             };
         }
 
-        const getEmployee = new GetEmployee(employeeRepository);
-        const employee = await getEmployee.execute(id);
+        const deleteEmployee = new DeleteEmployee(employeeRepository);
+        await deleteEmployee.execute(id);
 
         return {
             statusCode: 200,
-            body: JSON.stringify(employee),
+            body: JSON.stringify({ message: 'Employee deleted successfully' }),
         };
     } catch (error) {
         return {

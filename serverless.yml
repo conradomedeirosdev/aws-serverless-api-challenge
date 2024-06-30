@@ -23,10 +23,31 @@ provider:
 
 
 functions:
-  hello:
-    handler: dist/handler.hello
+  createEmployee:
+    handler: src/serverless/createEmployee.createEmployee
     events:
-      - httpApi: "*"
+      - http:
+          path: employees
+          method: post
+  deleteEmployee:
+    handler: src/serverless/deleteEmployee.deleteEmployee
+    events:
+      - http:
+          path: employees/{id}
+          method: delete
+  getEmployee:
+    handler: src/serverless/getEmployee.getEmployee
+    events:
+      - http:
+          path: employees/{id}
+          method: get
+  updateEmployee:
+    handler: src/serverless/updateEmployee.updateEmployee
+    events:
+      - http:
+          path: employees/{id}
+          method: put
+
 
 resources:
   Resources:
