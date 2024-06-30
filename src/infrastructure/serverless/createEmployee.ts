@@ -2,7 +2,6 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { CreateEmployee } from "../../application/use-cases/create-employee";
 import { EmployeeRepository } from "../database/employee-repository";
 
-// Inicializa o repositório de funcionários
 const employeeRepository = new EmployeeRepository();
 
 export const createEmployee: APIGatewayProxyHandler = async (event) => {
