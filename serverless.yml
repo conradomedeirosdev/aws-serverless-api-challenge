@@ -17,9 +17,9 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource:
-            - Fn::GetAtt: [UsersTable, Arn]
+            - Fn::GetAtt: [EmployeesTable, Arn]
   environment:
-    USERS_TABLE: ${self:custom.tableName}
+    EMPLOYEES_TABLE: ${self:custom.tableName}
 
 
 functions:
@@ -30,14 +30,14 @@ functions:
 
 resources:
   Resources:
-    UsersTable:
+    EmployeesTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: userId
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.tableName}
