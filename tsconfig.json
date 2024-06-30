@@ -1,13 +1,18 @@
 {
     "compilerOptions": {
+      "preserveConstEnums": true,
+      "strictNullChecks": true,
+      "sourceMap": true,
+      "allowJs": true,
       "target": "ES6",
       "module": "commonjs",
       "strict": true,
       "esModuleInterop": true,
       "skipLibCheck": true,
+      "moduleResolution": "node",
       "forceConsistentCasingInFileNames": true,
-      "outDir": "./dist",
-      "rootDir": "./src"
+      "outDir": ".build",
+      "rootDir": "./"
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"]
