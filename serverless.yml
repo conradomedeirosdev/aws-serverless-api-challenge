@@ -27,25 +27,25 @@ provider:
 
 functions:
   createEmployee:
-    handler: src/serverless/createEmployee.createEmployee
+    handler: src/serverless/createEmployee.handler
     events:
       - http:
           path: employees
           method: post
   deleteEmployee:
-    handler: src/serverless/deleteEmployee.deleteEmployee
+    handler: src/serverless/deleteEmployee.handler
     events:
       - http:
           path: employees/{id}
           method: delete
   getEmployee:
-    handler: src/serverless/getEmployee.getEmployee
+    handler: src/serverless/getEmployee.handler
     events:
       - http:
           path: employees/{id}
           method: get
   updateEmployee:
-    handler: src/serverless/updateEmployee.updateEmployee
+    handler: src/serverless/updateEmployee.handler
     events:
       - http:
           path: employees/{id}
@@ -65,6 +65,9 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.tableName}
+
+plugins:
+  - serverless-offline
 
 package:
   individually: true
