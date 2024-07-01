@@ -4,6 +4,7 @@ import { EmployeeId } from "../../domain/value-objects/employee-id";
 import { DynamoDB } from "aws-sdk";
 import { EmployeeName } from "../../domain/value-objects/employee-name";
 import { EmployeeAge } from "../../domain/value-objects/employee-age";
+import 'dotenv/config';
 
 export class EmployeeRepository implements IEmployeeRepository {
   private tableName = process.env.EMPLOYEES_TABLE!;
@@ -14,7 +15,7 @@ export class EmployeeRepository implements IEmployeeRepository {
       .put({
         TableName: this.tableName,
         Item: {
-          id: employee.id.value,
+          employeeId: employee.employeeId.value,
           name: employee.name.value,
           age: employee.age.value,
           position: employee.position,
@@ -27,14 +28,14 @@ export class EmployeeRepository implements IEmployeeRepository {
     const result = await this.dbClient
       .get({
         TableName: this.tableName,
-        Key: { id: id.value },
+        Key: { employeeId: id.value },
       })
       .promise();
 
     if (!result.Item) return null;
 
     return new Employee(
-      new EmployeeId(result.Item.id),
+      new EmployeeId(result.Item.employeeId),
       new EmployeeName(result.Item.name),
       new EmployeeAge(result.Item.age),
       result.Item.position
@@ -45,7 +46,7 @@ export class EmployeeRepository implements IEmployeeRepository {
     await this.dbClient
       .update({
         TableName: this.tableName,
-        Key: { id: employee.id.value },
+        Key: { employeeId: employee.employeeId.value },
         UpdateExpression: "set #name = :name, age = :age, position = :position",
         ExpressionAttributeNames: {
           "#name": "name",
@@ -59,11 +60,11 @@ export class EmployeeRepository implements IEmployeeRepository {
       .promise();
   }
 
-  async delete(id: EmployeeId): Promise<void> {
+  async delete(employeeId: EmployeeId): Promise<void> {
     await this.dbClient
       .delete({
         TableName: this.tableName,
-        Key: { id: id.value },
+        Key: { employeeId: employeeId.value },
       })
       .promise();
   }
