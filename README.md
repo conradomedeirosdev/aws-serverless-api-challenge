@@ -28,3 +28,56 @@ Este projeto implementa uma API serverless para gerenciar dados de funcionários
 1. Clone o repositório:
    ```sh
    git clone https://github.com/conradomedeirosdev/aws-serverless-api-challenge.git
+2. Instale as dependências:
+   ```
+   npm install
+3. Configure suas credenciais da AWS:
+   ```
+   aws configure
+4. Defina a variável de ambiente no arquivo serverless.yml:
+   ```yaml
+   environment:
+   EMPLOYEES_TABLE: "Employees"
+### Deploy
+Para fazer o deploy da aplicação na AWS:
+```
+sls deploy
+```
+## Endpoints
+### Criar Funcionário
+- URL: /employees
+- Método: POST
+- Body:
+```json
+{
+  "employeeId": "unique-id",
+  "name": "John Doe",
+  "age": 30,
+  "position": "Developer"
+}
+```
+### Consultar Funcionário
+- URL: /employees/{employeeId}
+- Método: GET
+### Atualizar Funcionário
+- URL: /employees/{employeeId}
+- Método: PUT
+- Body:
+```json
+{
+  "name": "Jane Doe",
+  "age": 31,
+  "position": "Senior Developer"
+}
+```
+### Deletar Funcionário
+- URL: /employees/{employeeId}
+- Método: DELETE
+## Testes
+Os testes são implementados utilizando Jest. Para rodar os testes:
+```
+npm test
+```
+
+## Licença
+Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
