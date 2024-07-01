@@ -1,31 +1,37 @@
-import { APIGatewayProxyHandler } from "aws-lambda";
+import express, { Request, Response } from "express";
+import serverless from "serverless-http";
 import { DeleteEmployee } from "../application/use-cases/delete-employee";
 import { EmployeeRepository } from "../infrastructure/database/employee-repository";
 
+const app = express();
+
+app.use(express.json());
+
 const employeeRepository = new EmployeeRepository();
 
-export const deleteEmployee: APIGatewayProxyHandler = async (event) => {
-    try {
-        const id = event.pathParameters?.id;
+async function deleteEmployee(event: Request, res: Response) {
+  const { employeeId } = event.params;
 
-        if (!id) {
-            return {
-                statusCode: 400,
-                body: JSON.stringify({ message: 'Employee ID is required' }),
-            };
-        }
+  if (!employeeId) {
+    return res.status(400).json({ error: "Missing employee ID" });
+  }
 
-        const deleteEmployee = new DeleteEmployee(employeeRepository);
-        await deleteEmployee.execute(id);
+  try {
+    const deleteEmployee = new DeleteEmployee(employeeRepository);
+    await deleteEmployee.execute(employeeId);
+    return res.status(200).json({ message: "Employee deleted successfully" });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ error: "Could not delete employee" });
+  }
+}
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ message: 'Employee deleted successfully' }),
-        };
-    } catch (error) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ message: (error as Error).message }),
-        };
-    }
-};
+app.delete("/employees/:employeeId", deleteEmployee);
+
+app.use((_req, res) => {
+  return res.status(404).json({
+    error: "Not Found",
+  });
+});
+
+export const handler = serverless(app);
