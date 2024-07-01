@@ -4,7 +4,7 @@ import { EmployeeAge } from "../value-objects/employee-age";
 
 export class Employee {
   constructor(
-    public readonly id: EmployeeId,
+    public readonly employeeId: EmployeeId,
     public readonly name: EmployeeName,
     public readonly age: EmployeeAge,
     public readonly position: string
