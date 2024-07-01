@@ -8,13 +8,13 @@ export class CreateEmployee {
   constructor(private employeeRepository: IEmployeeRepository) {}
 
   async execute(
-    id: string,
+    employeeId: string,
     name: string,
     age: number,
     position: string
   ): Promise<void> {
     const employee = new Employee(
-      new EmployeeId(id),
+      new EmployeeId(employeeId),
       new EmployeeName(name),
       new EmployeeAge(age),
       position
